@@ -2,95 +2,103 @@
 
 namespace Bankingsystem
 {
-    // Account structure
-    struct Account
+    public class Program
     {
-        // Field to store account holder details
-        public string Accountholder;
-        public string Accountnumber;
-        public string Bankname;
-        public decimal Balance; 
-
-        // Method to deposit amount into the account
-        public void Deposit(decimal amount)
+        // Main Method
+        public static void Main()
         {
-            Balance += amount;
-            Console.WriteLine("Deposited: " + amount);
-        }
+            // Instance for Bank class 
+            Bank bank = new Bank();
 
-        // Method to Withdraw amount from the account
-        public void Withdraw(decimal amount)
-        {
-            // Check the withdraw amount is less than or equal to balance amount
-            if (amount <= Balance)
+            while (true)
             {
-                Balance -= amount;
-                Console.WriteLine("Withdraw: " + amount);
-            }
-            // If withdraw amount is greater than balance then print Insufficient Balance
-            else
-            {
-                Console.WriteLine("Insufficient Balance");
-            }
-        }
+                // Display the menu for user
+                Console.WriteLine("\n1. Create Savings Account\n2. Create current Account\n3. Deposit\n4. Withdraw\n5. Balance Inquiry\n6. Exit");
+                Console.Write("Enter your choice: ");
+                int choice = int.Parse(Console.ReadLine());
 
-        // Method to Inquriy or display the account details
-        public void BalanceInquiry()
-        {
-            Console.WriteLine("Account Holder: " + Accountholder);
-            Console.WriteLine("Account Number: " + Accountnumber);
-            Console.WriteLine("Bank Name: " + Bankname);
-            Console.WriteLine("Current Balance: " + Balance);
-        }
-    }
-
-    // class for bankingsystem
-    class Bankingsystem
-    {
-        // Main method
-        static void Main(string[] args)
-        {
-            // Initialize account with default values
-            Account myaccount = new Account();
-            myaccount.Accountholder = "viswa";
-            myaccount.Accountnumber = "1234554513156";
-            myaccount.Bankname = "HDFC";
-            myaccount.Balance = 10000;
-
-            bool exit = true;
-
-            while (exit)
-            {
-                // display menu for users
-                Console.WriteLine("Banking System");
-                Console.WriteLine("1. Deposit");
-                Console.WriteLine("2. Withdraw");
-                Console.WriteLine("3. Balance Inquiry");
-                Console.WriteLine("4. Exit");
-                Console.Write("Select an option: ");
-                string choice = Console.ReadLine();
-
-                // handle the operation based on user choice
+                // Switch statement to handle the user choice
                 switch (choice)
                 {
-                    case "1":
-                        Console.Write("Enter amount to deposit: ");
-                        decimal depositamount = Convert.ToDecimal(Console.ReadLine());
-                        myaccount.Deposit(depositamount);
+                    case 1:
+
+                        // Create Savings Account
+                        Console.Write("Enter account number: ");
+                        string savingsAccountNumber = Console.ReadLine();
+                        Console.Write("Enter account holder name: ");
+                        string savingsAccountHolder = Console.ReadLine();
+                        Console.Write("Enter initial balance: ");
+                        decimal savingsInitialBalance = decimal.Parse(Console.ReadLine());
+                        bank.CreateSavingsAccount(savingsAccountNumber, savingsAccountHolder, savingsInitialBalance);
                         break;
-                    case "2":
-                        Console.Write("Enter amount to withdraw: ");
-                        decimal withdrawamount = Convert.ToDecimal(Console.ReadLine());
-                        myaccount.Withdraw(withdrawamount);
+                    case 2:
+
+                        // Create Current Account
+                        Console.Write("Enter account number: ");
+                        string currentAccountNumber = Console.ReadLine();
+                        Console.Write("Enter account holder name: ");
+                        string currentAccountHolder = Console.ReadLine();
+                        Console.Write("Enter initial balance: ");
+                        decimal currentInitialBalance = decimal.Parse(Console.ReadLine());
+                        bank.CreatecurrentAccount(currentAccountNumber, currentAccountHolder, currentInitialBalance);
                         break;
-                    case "3":
-                        myaccount.BalanceInquiry();
+                    case 3:
+
+                        // Deposit money to account
+                        Console.Write("Enter account number: ");
+                        string depositAccountNumber = Console.ReadLine();
+                        BankAccount depositAccount = bank.GetAccount(depositAccountNumber);
+                        if (depositAccount != null)
+                        {
+                            Console.Write("Enter amount to deposit: ");
+                            decimal depositAmount = decimal.Parse(Console.ReadLine());
+                            depositAccount.Deposit(depositAmount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Account not found.");
+                        }
                         break;
-                    case "4":
-                        exit = false;
+                    case 4:
+
+                        // Withdraw money from account
+                        Console.Write("Enter account number: ");
+                        string withdrawAccountNumber = Console.ReadLine();
+                        BankAccount withdrawAccount = bank.GetAccount(withdrawAccountNumber);
+                        if (withdrawAccount != null)
+                        {
+                            Console.Write("Enter amount to withdraw: ");
+                            decimal withdrawAmount = decimal.Parse(Console.ReadLine());
+                            withdrawAccount.Withdraw(withdrawAmount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Account not found");
+                        }
                         break;
+                    case 5:
+
+                        // Check the balance of the account
+                        Console.Write("Enter account number: ");
+                        string inquiryAccountNumber = Console.ReadLine();
+                        BankAccount inquiryAccount = bank.GetAccount(inquiryAccountNumber);
+                        if (inquiryAccount != null)
+                        {
+                            inquiryAccount.BalanceInquiry();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Account not found");
+                        }
+                        break;
+                    case 6:
+
+                        // To exit program
+                        return;
                     default:
-                        Console.WriteLine("Invalid option Please try again");
+
+                        // Handle invalid choice
+                        Console.WriteLine("Invalid choice Please try again");
                         break;
                 }
             }
