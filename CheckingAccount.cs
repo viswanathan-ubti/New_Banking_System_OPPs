@@ -14,17 +14,33 @@ namespace Bankingsystem
         // Override the Withdraw method to include specific behavior
         public override void Withdraw(decimal amount)
         {
-            // Check withdraw amount is greater than balance
-            if (amount > Balance)
+            // Try block
+            try
             {
-                Console.WriteLine("Insufficient fund");
+                // Check withdraw amount is greater than balance
+                if (amount > Balance)
+                {
+                    Console.WriteLine("Insufficient fund");
+                }
+
+                // Reduce amount from the balance
+                else
+                {
+                    Balance -= amount;
+                    Console.WriteLine($"Withdraw {amount}. New balance is {Balance}");
+                }
             }
 
-            // Reduce amount from the balance
-            else
+            // Catch block
+            catch (Exception e)
             {
-                Balance -= amount;
-                Console.WriteLine($"Withdraw {amount}. New balance is {Balance}");
+                Console.WriteLine("Error occured in Withdraw method: " + e.Message);
+            }
+
+            // Finally block
+            finally
+            {
+                Console.WriteLine("Withdraw operation completed...");
             }
         }
     }

@@ -12,34 +12,63 @@ namespace Bankingsystem
         // Method to create savings account
         public void CreateSavingsAccount(string accountNumber, string accountHolder, decimal initialBalance)
         {
-            // Check if the account already exist
-            if (accounts.ContainsKey(accountNumber))
+            // Try block
+            try
             {
-                Console.WriteLine("Account already exist");
-            }
+                // Check if the account already exist
+                if (accounts.ContainsKey(accountNumber))
+                {
+                    Console.WriteLine("Account already exist");
+                }
 
-            // Create a new savings account and add it to the dictionary
-            else
-            {
-                accounts[accountNumber] = new SavingsAccount(accountNumber, accountHolder, initialBalance);
-                Console.WriteLine($"Savings account created for {accountHolder}");
+                // Create a new savings account and add it to the dictionary
+                else
+                {
+                    accounts[accountNumber] = new SavingsAccount(accountNumber, accountHolder, initialBalance);
+                    Console.WriteLine($"Savings account created for {accountHolder}");
+                }
             }
+            // Catch block
+            catch (Exception e)
+            {
+                Console.WriteLine("Error occured in creating savings account: " + e.Message);
+            }
+            // Finally block
+            finally
+            {
+                Console.WriteLine("Successfully savings account created...");
+            }
+            
         }
 
         // Method to create current account
         public void CreatecurrentAccount(string accountNumber, string accountHolder, decimal initialBalance)
         {
-            // Check if the account already exist
-            if (accounts.ContainsKey(accountNumber))
+            // Try block
+            try
             {
-                Console.WriteLine("Account already exist");
-            }
+                // Check if the account already exist
+                if (accounts.ContainsKey(accountNumber))
+                {
+                    Console.WriteLine("Account already exist");
+                }
 
-            // Create a new current account and add it to the dictionary
-            else
+                // Create a new current account and add it to the dictionary
+                else
+                {
+                    accounts[accountNumber] = new currentAccount(accountNumber, accountHolder, initialBalance);
+                    Console.WriteLine($"current account created for {accountHolder}");
+                }    
+            }
+             // Catch block
+            catch (Exception e)
             {
-                accounts[accountNumber] = new currentAccount(accountNumber, accountHolder, initialBalance);
-                Console.WriteLine($"current account created for {accountHolder}");
+                Console.WriteLine("Error occured in creating current account: " + e.Message);
+            }
+            // Finally block
+            finally
+            {
+                Console.WriteLine("Successfully current account created...");
             }
         }
 

@@ -32,25 +32,54 @@ namespace Bankingsystem
         // Virtual method for deposit money to account
         public virtual void Deposit(decimal amount)
         {
-            Balance += amount;
-            Console.WriteLine($"Deposited {amount}, New balance is {Balance}");
+            // Try block
+            try
+            {
+                Balance += amount;
+                Console.WriteLine($"Deposited {amount}, New balance is {Balance}");
+            }
+            // Catch block
+            catch (Exception e)
+            {
+                Console.WriteLine("Error occured in Depsoit method: " + e.Message);
+            }
+            // Finally block
+            finally
+            {
+                Console.WriteLine("Deposit operation completed...");
+            }
         }
 
 
         // Virtual method for withdraw money from account
         public virtual void Withdraw(decimal amount)
         {
-            // Check withdraw amount is greater than balance
-            if (amount > Balance)
+            // Try block
+            try
             {
-                Console.WriteLine("Insufficient fund");
+                // Check withdraw amount is greater than balance
+                if (amount > Balance)
+                {
+                    Console.WriteLine("Insufficient fund");
+                }
+                // Reduce amount from the balance
+                else
+                {
+                    Balance -= amount;
+                    Console.WriteLine($"Withdraw {amount}, New balance is {Balance}");
+                }
             }
-            // Reduce amount from the balance
-            else
+            // Catch block
+            catch (Exception e)
             {
-                Balance -= amount;
-                Console.WriteLine($"Withdraw {amount}, New balance is {Balance}");
+                Console.WriteLine("Error occured in withdraw method: " + e.Message);
             }
+            // Finally block
+            finally
+            {
+                Console.WriteLine("Withdraw operation completed...");
+            }
+            
         }
 
         // Method to display account balance, account holder, account number
