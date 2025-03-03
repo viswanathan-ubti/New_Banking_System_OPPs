@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Bankingsystem
 {
@@ -10,34 +11,36 @@ namespace Bankingsystem
             : base(accountNumber, accountHolder, initialBalance)
         {
         }
+        private decimal OverdraftLimit = 200;
 
         // Override the Withdraw method to include specific behavior
         public override void Withdraw(decimal amount)
         {
-            // Try block
             try
             {
-                // Check withdraw amount is greater than balance
-                if (amount > Balance)
+                // Validate the withdraw amount is positive
+                if (amount <= 0)
                 {
-                    Console.WriteLine("Insufficient fund");
+                    Console.WriteLine("Withdraw amount must be positive");
+                    return;
                 }
 
-                // Reduce amount from the balance
+                // Check if the withdraw amount exceed the balance + overdraft limit
+                if (amount > Balance + OverdraftLimit)
+                {
+                    Console.WriteLine("Insufficient fund including overdraft limit");
+                }
                 else
                 {
+                    // Reduce the amount from the balance
                     Balance -= amount;
-                    Console.WriteLine($"Withdraw {amount}. New balance is {Balance}");
+                    Console.WriteLine($"Withdraw {amount}, New balance is {Balance}");
                 }
             }
-
-            // Catch block
             catch (Exception e)
             {
-                Console.WriteLine("Error occured in Withdraw method: " + e.Message);
+                Console.WriteLine("Error occurred during withdraw: " + e.Message);
             }
-
-            // Finally block
             finally
             {
                 Console.WriteLine("Withdraw operation completed...");

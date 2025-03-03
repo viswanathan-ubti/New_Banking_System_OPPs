@@ -30,7 +30,7 @@ namespace Bankingsystem
         }
 
         // Virtual method for deposit money to account
-        public virtual void Deposit(decimal amount)
+        public void Deposit(decimal amount)
         {
             // Try block
             try
@@ -85,7 +85,7 @@ namespace Bankingsystem
         // Method to display account balance, account holder, account number
         public void BalanceInquiry()
         {
-            Console.WriteLine($"Account holder: {AccountHolder}");
+            Console.WriteLine($"\nAccount holder: {AccountHolder}");
             Console.WriteLine($"Account number: {AccountNumber}");
             Console.WriteLine($"Account balance: {Balance}");
         }

@@ -27,34 +27,34 @@ namespace Bankingsystem
 
                             // Create Savings Account
                             Console.Write("Enter account number: ");
-                            string savingsAccountNumber = Console.ReadLine();
+                            string savingsAccountNumber = GetValidAccountNumber();
                             Console.Write("Enter account holder name: ");
-                            string savingsAccountHolder = Console.ReadLine();
-                            Console.Write("Enter initial balance: ");
-                            decimal savingsInitialBalance = decimal.Parse(Console.ReadLine());
+                            string savingsAccountHolder = GetValidAccountHolderName();
+                            String Message = "Enter initial balance: ";
+                            decimal savingsInitialBalance = GetDecimalInput(Message);
                             bank.CreateSavingsAccount(savingsAccountNumber, savingsAccountHolder, savingsInitialBalance);
                             break;
                         case 2:
 
                             // Create Current Account
                             Console.Write("Enter account number: ");
-                            string currentAccountNumber = Console.ReadLine();
+                            string currentAccountNumber = GetValidAccountNumber();
                             Console.Write("Enter account holder name: ");
-                            string currentAccountHolder = Console.ReadLine();
-                            Console.Write("Enter initial balance: ");
-                            decimal currentInitialBalance = decimal.Parse(Console.ReadLine());
+                            string currentAccountHolder = GetValidAccountHolderName();
+                            Message = "Enter initial balance: ";
+                            decimal currentInitialBalance = GetDecimalInput(Message);
                             bank.CreatecurrentAccount(currentAccountNumber, currentAccountHolder, currentInitialBalance);
                             break;
                         case 3:
 
                             // Deposit money to account
                             Console.Write("Enter account number: ");
-                            string depositAccountNumber = Console.ReadLine();
+                            string depositAccountNumber = GetValidAccountNumber();
                             BankAccount depositAccount = bank.GetAccount(depositAccountNumber);
                             if (depositAccount != null)
                             {
-                                Console.Write("Enter amount to deposit: ");
-                                decimal depositAmount = decimal.Parse(Console.ReadLine());
+                                Message = "Enter amount to deposit: ";
+                                decimal depositAmount = GetDecimalInput(Message);
                                 depositAccount.Deposit(depositAmount);
                             }
                             else
@@ -66,12 +66,12 @@ namespace Bankingsystem
 
                             // Withdraw money from account
                             Console.Write("Enter account number: ");
-                            string withdrawAccountNumber = Console.ReadLine();
+                            string withdrawAccountNumber = GetValidAccountNumber();
                             BankAccount withdrawAccount = bank.GetAccount(withdrawAccountNumber);
                             if (withdrawAccount != null)
                             {
-                                Console.Write("Enter amount to withdraw: ");
-                                decimal withdrawAmount = decimal.Parse(Console.ReadLine());
+                                Message = "Enter amount to withdraw: ";
+                                decimal withdrawAmount = GetDecimalInput(Message);
                                 withdrawAccount.Withdraw(withdrawAmount);
                             }
                             else
@@ -83,7 +83,7 @@ namespace Bankingsystem
 
                             // Check the balance of the account
                             Console.Write("Enter account number: ");
-                            string inquiryAccountNumber = Console.ReadLine();
+                            string inquiryAccountNumber = GetValidAccountNumber();
                             BankAccount inquiryAccount = bank.GetAccount(inquiryAccountNumber);
                             if (inquiryAccount != null)
                             {
@@ -106,10 +106,6 @@ namespace Bankingsystem
                     }
                 }
                 // Catch block
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid choice Please enter valid choice");
-                }
                 catch (Exception e)
                 {
                     Console.WriteLine("Error occured: " + e.Message);
@@ -121,6 +117,76 @@ namespace Bankingsystem
                     Console.WriteLine("Operation successfully completed...");
                 }
             }
+        }
+
+        // Method to validate account holder name
+        static string GetValidAccountHolderName()
+        {
+            string name;
+            while (true)
+            {
+                name = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(name) && IsAlphabetic(name))
+                {
+                    return name; // Return valid account holder name
+                }
+                Console.WriteLine("Invalid name Please enter a name that contains only alphabetic characters");
+                Console.Write("Enter account holder name: ");
+            }
+        }
+
+        // Method to validate account number
+        static string GetValidAccountNumber()
+        {
+            string accountNumber;
+            while (true)
+            {
+                accountNumber = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(accountNumber) && IsNumeric(accountNumber))
+                {
+                    return accountNumber; // Return valid account number
+                }
+                Console.WriteLine("Invalid account number Please enter a number that contains only numeric characters");
+                Console.Write("Enter account number: ");
+            }
+        }
+
+        // Method to check the account holder name contains only alphabetic characters
+        static bool IsAlphabetic(string input)
+        {
+            foreach (char c in input)
+            {
+                if (!char.IsLetter(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Method to check the account number contains only numeric characters
+        static bool IsNumeric(string input)
+        {
+            foreach (char c in input)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Method to prompt user for amount input with validation
+        static decimal GetDecimalInput(String Message)
+        {
+            Console.Write(Message);
+            decimal amount;
+            while (!decimal.TryParse(Console.ReadLine(), out amount))
+            {
+                Console.Write("Invalid amount entered Please enter valid amount: ");
+            }
+            return amount;
         }
     }
 }
